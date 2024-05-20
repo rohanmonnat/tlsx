@@ -68,7 +68,7 @@ export default class Time {
       const [component, config] = token;
       if (component === 'hour' && (formattedTime.includes('a') || formattedTime.includes('A'))) {
         const meridiem = this[component] >= 12 ? 'pm' : 'am';
-        const hour = this[component] === 0 ? 12 : this[component] % 12;
+        const hour = this[component] % 12 === 0 ? 12 : this[component] % 12;
         return formattedTime
           .replace('a', meridiem)
           .replace('A', meridiem.toUpperCase())
