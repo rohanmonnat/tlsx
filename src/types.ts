@@ -6,3 +6,8 @@ export interface ITime {
 }
 
 export type ITimeComponent = keyof ITime;
+
+export type ComponentTokenConfig = {
+  identifier: string;
+  size: number;
+};

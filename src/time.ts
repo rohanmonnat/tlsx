@@ -1,4 +1,4 @@
-import { ITime, ITimeComponent } from './types';
+import { ComponentTokenConfig, ITime, ITimeComponent } from './types';
 import { isNonNegativeInteger, isNumber, pad } from './utilts';
 
 export default class Time {
@@ -51,13 +51,7 @@ export default class Time {
   };
 
   format = (fmt: string): string => {
-    const formatTokens: Record<
-      ITimeComponent,
-      {
-        identifier: string;
-        size: number;
-      }
-    > = {
+    const formatTokens: Record<ITimeComponent, ComponentTokenConfig> = {
       hour: { identifier: 'hh', size: 2 },
       minute: { identifier: 'mm', size: 2 },
       second: { identifier: 'ss', size: 2 },
