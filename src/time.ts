@@ -158,6 +158,12 @@ export default class Time {
     }, {}) as ITime;
   };
 
+  toMillisecond = (): number => {
+    return (
+      this.getHour() * 60 * 60 * 1000 + this.getMinute() * 60 * 1000 + this.getSecond() * 1000 + this.getMillisecond()
+    );
+  };
+
   format = (fmt: string): string => {
     const formatTokens: Record<ITimeComponent, ComponentTokenConfig> = {
       hour: { identifier: 'hh', size: 2 },
