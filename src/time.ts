@@ -1,3 +1,4 @@
+import { newInvalidValueError, newOutOfRangeError } from './error';
 import { ComponentTokenConfig, ITime, ITimeComponent } from './types';
 import { isNonNegativeInteger, isNumber, pad } from './utilts';
 
@@ -41,6 +42,70 @@ export default class Time {
       default:
         throw new Error(`invalid time component ${component}`);
     }
+  };
+
+  getHour = (): number => {
+    return this.hour;
+  };
+
+  getMinute = (): number => {
+    return this.minute;
+  };
+
+  getSecond = (): number => {
+    return this.second;
+  };
+
+  getMillisecond = (): number => {
+    return this.millisecond;
+  };
+
+  setHour = (value: number): number => {
+    if (!isNonNegativeInteger(value)) {
+      throw newInvalidValueError('hour', value);
+    }
+
+    if (!(value >= 0 && value < 24)) {
+      throw newOutOfRangeError('hour', '0 to 23', value);
+    }
+
+    return (this.hour = value);
+  };
+
+  setMinute = (value: number) => {
+    if (!isNonNegativeInteger(value)) {
+      throw newInvalidValueError('minute', value);
+    }
+
+    if (!(value >= 0 && value < 60)) {
+      throw newOutOfRangeError('minute', '0 to 59', value);
+    }
+
+    return (this.minute = value);
+  };
+
+  setSecond = (value: number) => {
+    if (!isNonNegativeInteger(value)) {
+      throw newInvalidValueError('second', value);
+    }
+
+    if (!(value >= 0 && value < 60)) {
+      throw newOutOfRangeError('second', '0 to 59', value);
+    }
+
+    return (this.second = value);
+  };
+
+  setMillisecond = (value: number) => {
+    if (!isNonNegativeInteger(value)) {
+      throw newInvalidValueError('millisecond', value);
+    }
+
+    if (!(value >= 0 && value < 60)) {
+      throw newOutOfRangeError('millisecond', '0 to 999', value);
+    }
+
+    return (this.millisecond = value);
   };
 
   toJSON = (): ITime => {
