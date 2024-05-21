@@ -109,9 +109,69 @@ describe('isEqual method', () => {
       millisecond: 12,
     });
     const notTime = { hour: 12, minute: 30, second: 45, millisecond: 500 };
-    expect(() => time1.isEqual(notTime as any)).toThrow(
-      new Error('invalid argument provided, expected instance of time')
-    );
+    expect(() => time1.isEqual(notTime as any)).toThrow(new Error('Invalid argument. Argument must be a Time object.'));
+  });
+});
+
+describe('isSmaller method', () => {
+  it('should return true when the first time is smaller by hours', () => {
+    const time1 = new Time({ hour: 10, minute: 0, second: 0, millisecond: 0 });
+    const time2 = new Time({ hour: 12, minute: 0, second: 0, millisecond: 0 });
+    expect(time1.isSmaller(time2)).toBe(true);
+  });
+
+  it('should return false when the first time is larger by hours', () => {
+    const time1 = new Time({ hour: 13, minute: 0, second: 0, millisecond: 0 });
+    const time2 = new Time({ hour: 12, minute: 0, second: 0, millisecond: 0 });
+    expect(time1.isSmaller(time2)).toBe(false);
+  });
+
+  it('should return true when the first time is smaller by minutes', () => {
+    const time1 = new Time({ hour: 12, minute: 10, second: 0, millisecond: 0 });
+    const time2 = new Time({ hour: 12, minute: 20, second: 0, millisecond: 0 });
+    expect(time1.isSmaller(time2)).toBe(true);
+  });
+
+  it('should return false when the first time is larger by minutes', () => {
+    const time1 = new Time({ hour: 12, minute: 30, second: 0, millisecond: 0 });
+    const time2 = new Time({ hour: 12, minute: 20, second: 0, millisecond: 0 });
+    expect(time1.isSmaller(time2)).toBe(false);
+  });
+
+  it('should return true when the first time is smaller by seconds', () => {
+    const time1 = new Time({ hour: 12, minute: 30, second: 10, millisecond: 0 });
+    const time2 = new Time({ hour: 12, minute: 30, second: 20, millisecond: 0 });
+    expect(time1.isSmaller(time2)).toBe(true);
+  });
+
+  it('should return false when the first time is larger by seconds', () => {
+    const time1 = new Time({ hour: 12, minute: 30, second: 30, millisecond: 0 });
+    const time2 = new Time({ hour: 12, minute: 30, second: 20, millisecond: 0 });
+    expect(time1.isSmaller(time2)).toBe(false);
+  });
+
+  it('should return true when the first time is smaller by milliseconds', () => {
+    const time1 = new Time({ hour: 12, minute: 30, second: 30, millisecond: 10 });
+    const time2 = new Time({ hour: 12, minute: 30, second: 30, millisecond: 20 });
+    expect(time1.isSmaller(time2)).toBe(true);
+  });
+
+  it('should return false when the first time is larger by milliseconds', () => {
+    const time1 = new Time({ hour: 12, minute: 30, second: 30, millisecond: 30 });
+    const time2 = new Time({ hour: 12, minute: 30, second: 30, millisecond: 20 });
+    expect(time1.isSmaller(time2)).toBe(false);
+  });
+
+  it('should return false when both times are equal', () => {
+    const time1 = new Time({ hour: 12, minute: 30, second: 30, millisecond: 30 });
+    const time2 = new Time({ hour: 12, minute: 30, second: 30, millisecond: 30 });
+    expect(time1.isSmaller(time2)).toBe(false);
+  });
+
+  it('should throw an error if the argument is not an instance of Time', () => {
+    const time1 = new Time({ hour: 12, minute: 30, second: 30, millisecond: 30 });
+    const notTime = { hour: 12, minute: 30, second: 30, millisecond: 30 };
+    expect(() => time1.isSmaller(notTime as any)).toThrow('Invalid argument. Argument must be a Time object.');
   });
 });
 
