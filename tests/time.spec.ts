@@ -20,94 +20,39 @@ describe('Time class', () => {
 
 describe('isEqual method', () => {
   it('should return true for two Time instances with equal time components', () => {
-    const time1 = new Time({
-      hour: 12,
-      minute: 45,
-      second: 12,
-      millisecond: 12,
-    });
-    const time2 = new Time({
-      hour: 12,
-      minute: 45,
-      second: 12,
-      millisecond: 12,
-    });
+    const time1 = new Time({ hour: 12, minute: 45, second: 12, millisecond: 12 });
+    const time2 = new Time({ hour: 12, minute: 45, second: 12, millisecond: 12 });
 
     const result = time1.isEqual(time2);
     expect(result).toBe(true);
   });
 
   it('should return false for two Time instances with different hours', () => {
-    const time1 = new Time({
-      hour: 12,
-      minute: 45,
-      second: 12,
-      millisecond: 12,
-    });
-    const time2 = new Time({
-      hour: 11,
-      minute: 45,
-      second: 12,
-      millisecond: 12,
-    });
+    const time1 = new Time({ hour: 12, minute: 45, second: 12, millisecond: 12 });
+    const time2 = new Time({ hour: 11, minute: 45, second: 12, millisecond: 12 });
     expect(time1.isEqual(time2)).toBe(false);
   });
 
   it('should return false for two Time instances with different minutes', () => {
-    const time1 = new Time({
-      hour: 12,
-      minute: 40,
-      second: 12,
-      millisecond: 12,
-    });
-    const time2 = new Time({
-      hour: 12,
-      minute: 45,
-      second: 12,
-      millisecond: 12,
-    });
+    const time1 = new Time({ hour: 12, minute: 40, second: 12, millisecond: 12 });
+    const time2 = new Time({ hour: 12, minute: 45, second: 12, millisecond: 12 });
     expect(time1.isEqual(time2)).toBe(false);
   });
 
   it('should return false for two Time instances with different seconds', () => {
-    const time1 = new Time({
-      hour: 12,
-      minute: 45,
-      second: 20,
-      millisecond: 12,
-    });
-    const time2 = new Time({
-      hour: 12,
-      minute: 45,
-      second: 12,
-      millisecond: 12,
-    });
+    const time1 = new Time({ hour: 12, minute: 45, second: 20, millisecond: 12 });
+    const time2 = new Time({ hour: 12, minute: 45, second: 12, millisecond: 12 });
     expect(time1.isEqual(time2)).toBe(false);
   });
 
   it('should return false for two Time instances with different milliseconds', () => {
-    const time1 = new Time({
-      hour: 12,
-      minute: 45,
-      second: 12,
-      millisecond: 10,
-    });
-    const time2 = new Time({
-      hour: 12,
-      minute: 45,
-      second: 12,
-      millisecond: 12,
-    });
+    const time1 = new Time({ hour: 12, minute: 45, second: 12, millisecond: 10 });
+    const time2 = new Time({ hour: 12, minute: 45, second: 12, millisecond: 12 });
     expect(time1.isEqual(time2)).toBe(false);
   });
 
   it('should throw an error if the argument is not an instance of Time', () => {
-    const time1 = new Time({
-      hour: 12,
-      minute: 45,
-      second: 12,
-      millisecond: 12,
-    });
+    const time1 = new Time({ hour: 12, minute: 45, second: 12, millisecond: 12 });
     const notTime = { hour: 12, minute: 30, second: 45, millisecond: 500 };
     expect(() => time1.isEqual(notTime as any)).toThrow(new Error('Invalid argument. Argument must be a Time object.'));
   });
