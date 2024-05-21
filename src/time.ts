@@ -128,7 +128,7 @@ export default class Time {
 
     if (this.hour < time.getHour()) {
       return true;
-    } else if (this.hour > time.getMinute()) {
+    } else if (this.hour > time.getHour()) {
       return false;
     }
 
