@@ -110,7 +110,7 @@ export default class Time {
 
   isEqual = (time: Time): boolean => {
     if (!(time instanceof Time)) {
-      throw new Error('invalid argument provided, expected instance of time');
+      throw new Error('Invalid argument. Argument must be a Time object.');
     }
 
     return (
