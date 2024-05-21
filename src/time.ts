@@ -121,6 +121,32 @@ export default class Time {
     );
   };
 
+  isSmaller = (time: Time) => {
+    if (this.hour < time.getHour()) {
+      return true;
+    } else if (this.hour > time.getMinute()) {
+      return false;
+    }
+
+    if (this.minute < time.getMinute()) {
+      return true;
+    } else if (this.minute > time.getMinute()) {
+      return false;
+    }
+
+    if (this.second < time.getSecond()) {
+      return true;
+    } else if (this.second > time.getSecond()) {
+      return false;
+    }
+
+    if (this.millisecond < time.getMillisecond()) {
+      return true;
+    }
+
+    return false;
+  };
+
   toJSON = (): ITime => {
     return this.components.reduce<Partial<ITime>>((obj: Partial<ITime>, component: ITimeComponent) => {
       obj[component] = this[component];
