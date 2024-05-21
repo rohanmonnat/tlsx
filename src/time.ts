@@ -108,6 +108,19 @@ export default class Time {
     return (this.millisecond = value);
   };
 
+  isEqual = (time: Time): boolean => {
+    if (!(time instanceof Time)) {
+      throw new Error('invalid argument provided, expected instance of time');
+    }
+
+    return (
+      this.hour === time.getHour() &&
+      this.minute === time.getMinute() &&
+      this.second === time.getSecond() &&
+      this.millisecond === time.getMillisecond()
+    );
+  };
+
   toJSON = (): ITime => {
     return this.components.reduce<Partial<ITime>>((obj: Partial<ITime>, component: ITimeComponent) => {
       obj[component] = this[component];
