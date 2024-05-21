@@ -122,6 +122,10 @@ export default class Time {
   };
 
   isSmaller = (time: Time) => {
+    if (!(time instanceof Time)) {
+      throw new Error('Invalid argument. Argument must be a Time object.');
+    }
+
     if (this.hour < time.getHour()) {
       return true;
     } else if (this.hour > time.getMinute()) {
