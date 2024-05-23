@@ -151,6 +151,36 @@ export default class Time {
     return false;
   };
 
+  isGreater = (time: Time) => {
+    if (!(time instanceof Time)) {
+      throw new Error('Invalid argument. Argument must be a Time object.');
+    }
+
+    if (this.hour > time.getHour()) {
+      return true;
+    } else if (this.hour < time.getHour()) {
+      return false;
+    }
+
+    if (this.minute > time.getMinute()) {
+      return true;
+    } else if (this.minute < time.getMinute()) {
+      return false;
+    }
+
+    if (this.second > time.getSecond()) {
+      return true;
+    } else if (this.second < time.getSecond()) {
+      return false;
+    }
+
+    if (this.millisecond > time.getMillisecond()) {
+      return true;
+    }
+
+    return false;
+  };
+
   toJSON = (): ITime => {
     return this.components.reduce<Partial<ITime>>((obj: Partial<ITime>, component: ITimeComponent) => {
       obj[component] = this[component];
