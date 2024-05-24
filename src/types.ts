@@ -11,3 +11,8 @@ export type ComponentTokenConfig = {
   identifier: string;
   size: number;
 };
+
+export interface ComponentRange {
+  start: number;
+  end: number;
+}

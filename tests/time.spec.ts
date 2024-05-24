@@ -54,7 +54,9 @@ describe('isEqual method', () => {
   it('should throw an error if the argument is not an instance of Time', () => {
     const time1 = new Time({ hour: 12, minute: 45, second: 12, millisecond: 12 });
     const notTime = { hour: 12, minute: 30, second: 45, millisecond: 500 };
-    expect(() => time1.isEqual(notTime as any)).toThrow(new Error('Invalid argument. Argument must be a Time object.'));
+    expect(() => time1.isEqual(notTime as any)).toThrow(
+      new Error('Invalid Time object. Expected argument to be a Time instance.')
+    );
   });
 });
 
@@ -116,7 +118,9 @@ describe('isSmaller method', () => {
   it('should throw an error if the argument is not an instance of Time', () => {
     const time1 = new Time({ hour: 12, minute: 30, second: 30, millisecond: 30 });
     const notTime = { hour: 12, minute: 30, second: 30, millisecond: 30 };
-    expect(() => time1.isSmaller(notTime as any)).toThrow('Invalid argument. Argument must be a Time object.');
+    expect(() => time1.isSmaller(notTime as any)).toThrow(
+      'Invalid Time object. Expected argument to be a Time instance.'
+    );
   });
 });
 
@@ -178,7 +182,9 @@ describe('isGreater method', () => {
   it('should throw an error if the argument is not an instance of Time', () => {
     const time1 = new Time({ hour: 12, minute: 30, second: 30, millisecond: 30 });
     const notTime = { hour: 12, minute: 30, second: 30, millisecond: 30 };
-    expect(() => time1.isGreater(notTime as any)).toThrow('Invalid argument. Argument must be a Time object.');
+    expect(() => time1.isGreater(notTime as any)).toThrow(
+      'Invalid Time object. Expected argument to be a Time instance.'
+    );
   });
 });
 
