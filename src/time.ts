@@ -24,10 +24,10 @@ export default class Time {
       // Todo: Add validation before parsing
       case 'number':
         const { hour, minute, second, millisecond } = parseTimeFromNumber(time);
-        this._hour = hour;
-        this._minute = minute;
-        this._second = second;
-        this._millisecond = millisecond;
+        this.hour = hour;
+        this.minute = minute;
+        this.second = second;
+        this.millisecond = millisecond;
 
         break;
 
@@ -36,19 +36,24 @@ export default class Time {
         break;
 
       case 'object':
-        this._components.forEach((component: ITimeComponent) => {
-          if (time[component]) {
-            if (isNumber(time[component])) {
-              if (!isNonNegativeInteger(time[component])) {
-                throw new Error(`expected ${component} to be a non-negative number got ${time[component]} instead`);
-              }
+        this.hour = time.hour ?? 0;
+        this.minute = time.minute ?? 0;
+        this.second = time.second ?? 0;
+        this.millisecond = time.millisecond ?? 0;
 
-              this[component] = normalizeTimeComponent(component, time[component] as number);
-            } else {
-              throw new Error(`expected ${component} to be a number got ${typeof time[component]} instead`);
-            }
-          }
-        });
+        //   this._components.forEach((component: ITimeComponent) => {
+        //     if (time[component]) {
+        //       if (isNumber(time[component])) {
+        //         if (!isNonNegativeInteger(time[component])) {
+        //           throw new Error(`expected ${component} to be a non-negative number got ${time[component]} instead`);
+        //         }
+
+        //         this[component] = normalizeTimeComponent(component, time[component] as number);
+        //       } else {
+        //         throw new Error(`expected ${component} to be a number got ${typeof time[component]} instead`);
+        //       }
+        //     }
+        //   });
         break;
 
       default:
@@ -77,16 +82,15 @@ export default class Time {
   }
 
   getComponentRange = (component: string) => {
-    const error = this._validateComponent(component);
-    if (error) {
-      throw error;
+    try {
+      return this._componentRanges[component as ITimeComponent];
+    } catch (_) {
+      return null;
     }
-
-    return this._componentRanges[component as ITimeComponent];
   };
 
   set hour(value: number) {
-    const error = this._validateComponentRange('hour', value);
+    const error = this._validateComponentValue('hour', value);
 
     if (error) {
       throw error;
@@ -96,7 +100,7 @@ export default class Time {
   }
 
   set minute(value: number) {
-    const error = this._validateComponentRange('minute', value);
+    const error = this._validateComponentValue('minute', value);
 
     if (error) {
       throw error;
@@ -106,7 +110,7 @@ export default class Time {
   }
 
   set second(value: number) {
-    const error = this._validateComponentRange('second', value);
+    const error = this._validateComponentValue('second', value);
 
     if (error) {
       throw error;
@@ -116,7 +120,7 @@ export default class Time {
   }
 
   set millisecond(value: number) {
-    const error = this._validateComponentRange('millisecond', value);
+    const error = this._validateComponentValue('millisecond', value);
 
     if (error) {
       throw error;
@@ -246,13 +250,22 @@ export default class Time {
     return this._components.some((cmp) => component === cmp);
   };
 
-  private _isComponentInValidRange = (component: string, value: number) => {
+  private _isComponentValueRangeValid = (component: string, value: number) => {
     if (this._isComponentValid(component)) {
       const range = this.getComponentRange(component);
+
+      if (!range) {
+        return false;
+      }
+
       return value >= range.start && value <= range.end;
     }
 
     return false;
+  };
+
+  private _isComponentValueValidType = (component: string, value: number) => {
+    return isNonNegativeInteger(value);
   };
 
   private _validateTimeInstance = (time: any) => {
@@ -271,17 +284,53 @@ export default class Time {
     return null;
   };
 
-  private _validateComponentRange = (component: string, value: number): Error | null => {
-    const error = this._validateComponent(component);
+  private _validateComponentValueRange = (component: string, value: number): Error | null => {
+    const range = this.getComponentRange(component);
+
+    if (!range) {
+      return newInvalidComponentError(component);
+    }
+
+    if (!this._isComponentValueRangeValid(component, value)) {
+      return newOutOfRangeError(component, `${range.start} to ${range.end}`, value);
+    }
+
+    return null;
+  };
+
+  private _validateComponentValueType = (component: string, value: number) => {
+    // const error = this._validateComponent(component);
+
+    // if (error) {
+    //   return error;
+    // }
+
+    if (!this._isComponentValueValidType(component, value)) {
+      return newInvalidValueError(component, value);
+    }
+
+    return null;
+  };
+
+  private _validateComponentValue = (component: string, value: number) => {
+    let error = null;
+
+    error = this._validateComponent(component);
 
     if (error) {
       return error;
     }
 
-    const range = this.getComponentRange(component);
+    error = this._validateComponentValueType(component, value);
 
-    if (!this._isComponentInValidRange(component, value)) {
-      return newOutOfRangeError(component, `${range.start} to ${range.end}`, value);
+    if (error) {
+      return error;
+    }
+
+    error = this._validateComponentValueRange(component, value);
+
+    if (error) {
+      return error;
     }
 
     return null;

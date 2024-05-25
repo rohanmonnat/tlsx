@@ -1,20 +1,59 @@
-import { Time } from '../src';
+import { ITime, ITimeComponent, Time } from '../src';
+import { TIME_COMPONENTS } from '../src/constants';
 
 describe('Time class', () => {
-  it('should throw an error when a component is not an non-negative integer', () => {
-    expect(() => {
-      new Time({
-        hour: -12,
-      });
-    }).toThrow(new Error('expected hour to be a non-negative number got -12 instead'));
+  let components: ITimeComponent[];
+
+  beforeAll(() => {
+    components = TIME_COMPONENTS;
   });
 
-  it('should throw an error when a component it not a number', () => {
-    expect(() => {
-      new Time({
-        minute: 'as' as any,
+  describe('Class insantiation with object', () => {
+    it('should create a new valid Time instance', () => {
+      const timeObject: ITime = {
+        hour: 10,
+        minute: 20,
+        second: 30,
+        millisecond: 500,
+      };
+      const time = new Time(timeObject);
+
+      components.forEach((component) => {
+        expect(time[component as ITimeComponent]).toBe(timeObject[component as ITimeComponent]);
       });
-    }).toThrow(new Error('expected minute to be a number got string instead'));
+    });
+
+    it('should create a Time instance with all components "0" when object is empty', () => {
+      const time = new Time({});
+
+      components.forEach((component) => {
+        expect(time[component as ITimeComponent]).toBe(0);
+      });
+    });
+
+    it('should throw an error when hour is a negative integer', () => {
+      expect(() => {
+        new Time({
+          hour: -12,
+        });
+      }).toThrow(new Error("Invalid 'hour'. Expected 'hour' to be a positive integer got '-12' instead."));
+    });
+
+    it('should throw an error when minute is a string', () => {
+      expect(() => {
+        new Time({
+          minute: 'two' as any,
+        });
+      }).toThrow(new Error("Invalid 'minute'. Expected 'minute' to be a positive integer got 'two' instead."));
+    });
+
+    it('should throw an error when hour is out of range', () => {
+      expect(() => {
+        new Time({
+          hour: 40,
+        });
+      }).toThrow(new Error("Invalid 'hour'. Expected 'hour' to be in range '0 to 23' got '40' instead."));
+    });
   });
 });
 
