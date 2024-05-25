@@ -55,6 +55,16 @@ describe('Time class', () => {
       }).toThrow(new Error("Invalid 'hour'. Expected 'hour' to be in range '0 to 23' got '40' instead."));
     });
   });
+
+  describe('Class instantiation when argument is undefined or absent', () => {
+    it('should create a new Time instance with all components "0"', () => {
+      const time = new Time();
+
+      components.forEach((component) => {
+        expect(time[component as ITimeComponent]).toBe(0);
+      });
+    });
+  });
 });
 
 describe('isEqual method', () => {

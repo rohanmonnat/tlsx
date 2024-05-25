@@ -12,10 +12,7 @@ export default class Time {
   private _second: number = 0;
   private _millisecond: number = 0;
 
-  constructor(time: number);
-  constructor(time: string);
-  constructor(time: Partial<ITime>);
-  constructor(time: number | string | Partial<ITime>) {
+  constructor(time?: number | string | Partial<ITime> | undefined) {
     this._componentRanges = COMPONENT_RANGE;
     this._components = TIME_COMPONENTS;
 
@@ -54,6 +51,13 @@ export default class Time {
         //       }
         //     }
         //   });
+        break;
+
+      case 'undefined':
+        this.hour = 0;
+        this.minute = 0;
+        this.second = 0;
+        this.millisecond = 0;
         break;
 
       default:
