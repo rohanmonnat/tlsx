@@ -7,10 +7,10 @@ import { isNonNegativeInteger, isNumber, pad } from './utilts';
 export default class Time {
   private readonly _components: ITimeComponent[];
   private readonly _componentRanges: Record<ITimeComponent, ComponentRange>;
-  private hour: number = 0;
-  private minute: number = 0;
-  private second: number = 0;
-  private millisecond: number = 0;
+  private _hour: number = 0;
+  private _minute: number = 0;
+  private _second: number = 0;
+  private _millisecond: number = 0;
 
   constructor(time: number);
   constructor(time: string);
@@ -24,10 +24,10 @@ export default class Time {
       // Todo: Add validation before parsing
       case 'number':
         const { hour, minute, second, millisecond } = parseTimeFromNumber(time);
-        this.hour = hour;
-        this.minute = minute;
-        this.second = second;
-        this.millisecond = millisecond;
+        this._hour = hour;
+        this._minute = minute;
+        this._second = second;
+        this._millisecond = millisecond;
 
         break;
 
@@ -56,21 +56,25 @@ export default class Time {
     }
   }
 
-  getHour = (): number => {
-    return this.hour;
-  };
+  get hour(): number {
+    return this._hour;
+  }
 
-  getMinute = (): number => {
-    return this.minute;
-  };
+  get minute(): number {
+    return this._minute;
+  }
 
-  getSecond = (): number => {
-    return this.second;
-  };
+  get second(): number {
+    return this._second;
+  }
 
-  getMillisecond = (): number => {
-    return this.millisecond;
-  };
+  get millisecond(): number {
+    return this._millisecond;
+  }
+
+  get components(): ITimeComponent[] {
+    return this._components;
+  }
 
   getComponentRange = (component: string) => {
     const error = this._validateComponent(component);
@@ -81,48 +85,45 @@ export default class Time {
     return this._componentRanges[component as ITimeComponent];
   };
 
-  getComponents = (): ITimeComponent[] => {
-    return this._components;
-  };
-
-  setHour = (value: number): number => {
+  set hour(value: number) {
     const error = this._validateComponentRange('hour', value);
 
     if (error) {
       throw error;
     }
 
-    return (this.hour = value);
-  };
+    this._hour = value;
+  }
 
-  setMinute = (value: number) => {
+  set minute(value: number) {
     const error = this._validateComponentRange('minute', value);
 
     if (error) {
       throw error;
     }
-    return (this.minute = value);
-  };
 
-  setSecond = (value: number) => {
+    this._minute = value;
+  }
+
+  set second(value: number) {
     const error = this._validateComponentRange('second', value);
 
     if (error) {
       throw error;
     }
 
-    return (this.second = value);
-  };
+    this._second = value;
+  }
 
-  setMillisecond = (value: number) => {
+  set millisecond(value: number) {
     const error = this._validateComponentRange('millisecond', value);
 
     if (error) {
       throw error;
     }
 
-    return (this.millisecond = value);
-  };
+    this._millisecond = value;
+  }
 
   isEqual = (time: Time): boolean => {
     const error = this._validateTimeInstance(time);
@@ -132,10 +133,10 @@ export default class Time {
     }
 
     return (
-      this.hour === time.getHour() &&
-      this.minute === time.getMinute() &&
-      this.second === time.getSecond() &&
-      this.millisecond === time.getMillisecond()
+      this.hour === time.hour &&
+      this.minute === time.minute &&
+      this.second === time.second &&
+      this.millisecond === time.millisecond
     );
   };
 
@@ -146,25 +147,25 @@ export default class Time {
       throw error;
     }
 
-    if (this.hour < time.getHour()) {
+    if (this.hour < time.hour) {
       return true;
-    } else if (this.hour > time.getHour()) {
+    } else if (this.hour > time.hour) {
       return false;
     }
 
-    if (this.minute < time.getMinute()) {
+    if (this.minute < time.minute) {
       return true;
-    } else if (this.minute > time.getMinute()) {
+    } else if (this.minute > time.minute) {
       return false;
     }
 
-    if (this.second < time.getSecond()) {
+    if (this.second < time.second) {
       return true;
-    } else if (this.second > time.getSecond()) {
+    } else if (this.second > time.second) {
       return false;
     }
 
-    if (this.millisecond < time.getMillisecond()) {
+    if (this.millisecond < time.millisecond) {
       return true;
     }
 
@@ -178,25 +179,25 @@ export default class Time {
       throw error;
     }
 
-    if (this.hour > time.getHour()) {
+    if (this.hour > time.hour) {
       return true;
-    } else if (this.hour < time.getHour()) {
+    } else if (this.hour < time.hour) {
       return false;
     }
 
-    if (this.minute > time.getMinute()) {
+    if (this.minute > time.minute) {
       return true;
-    } else if (this.minute < time.getMinute()) {
+    } else if (this.minute < time.minute) {
       return false;
     }
 
-    if (this.second > time.getSecond()) {
+    if (this.second > time.second) {
       return true;
-    } else if (this.second < time.getSecond()) {
+    } else if (this.second < time.second) {
       return false;
     }
 
-    if (this.millisecond > time.getMillisecond()) {
+    if (this.millisecond > time.millisecond) {
       return true;
     }
 
@@ -211,9 +212,7 @@ export default class Time {
   };
 
   toMillisecond = (): number => {
-    return (
-      this.getHour() * 60 * 60 * 1000 + this.getMinute() * 60 * 1000 + this.getSecond() * 1000 + this.getMillisecond()
-    );
+    return this.hour * 60 * 60 * 1000 + this.minute * 60 * 1000 + this.second * 1000 + this.millisecond;
   };
 
   format = (fmt: string): string => {
