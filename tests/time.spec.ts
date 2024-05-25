@@ -8,7 +8,7 @@ describe('Time class', () => {
     components = TIME_COMPONENTS;
   });
 
-  describe('Class insantiation with object', () => {
+  describe('Class instantiation with object', () => {
     it('should create a new valid Time instance', () => {
       const timeObject: ITime = {
         hour: 10,
@@ -23,7 +23,7 @@ describe('Time class', () => {
       });
     });
 
-    it('should create a Time instance with all components "0" when object is empty', () => {
+    it('should create a Time instance with all components equal to "0" when object is empty', () => {
       const time = new Time({});
 
       components.forEach((component) => {
@@ -57,7 +57,7 @@ describe('Time class', () => {
   });
 
   describe('Class instantiation when argument is undefined or absent', () => {
-    it('should create a new Time instance with all components "0"', () => {
+    it('should create a new Time instance with all components equal to "0"', () => {
       const time = new Time();
 
       components.forEach((component) => {
